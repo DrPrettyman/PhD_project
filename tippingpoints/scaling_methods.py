@@ -1,3 +1,13 @@
+#
+# Provides various functions for calculating scaling properties
+# of time series, in particular calculating:
+# - lag-1 autocorrelation function
+# - DFA scaling exponent
+# - Power Spectrum scaling exponent
+# And, in particular, each of these calculated in a sliding window.
+#
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 from tippingpoints import noise_methods
