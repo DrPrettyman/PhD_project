@@ -16,7 +16,7 @@ class Plot1by2:
     p = Plot1by2()
     p.ax1.set_xlim(0, 10)
     """
-    def __init__(self, figure_number: int = 0, share_y_axis: bool = True):
+    def __init__(self, figure_number: str = '0', share_y_axis: bool = True):
         self.share_y_axis = share_y_axis
         plt.style.use('./thesis.mplstyle')
         self.standard_line_dict = {'line1': {'color': 'k', 'lw': 1.2, 'ls': '-'},
@@ -30,7 +30,7 @@ class Plot1by2:
                                    'dash': {'color': (0.1, 0.1, 0.1), 'lw': 2, 'ls': '--'},
                                    'dash_red': {'color': 'r', 'lw': 2, 'ls': '--'}}
         self.fig, (self.ax1, self.ax2) = plt.subplots(1, 2)
-        self.fig.canvas.manager.set_window_title(f'Thesis_JPrettyman figure 2.{figure_number}')
+        self.fig.canvas.manager.set_window_title(f'Thesis_JPrettyman figure {figure_number}')
         self.ax1.tick_params('both', top=True, bottom=True, left=True, right=True, direction='in')
         self.ax2.tick_params('both', top=True, bottom=True, left=True, right=True, direction='in')
         self.ax2.tick_params('y', labelleft=False)
@@ -103,7 +103,7 @@ def fig03(n: int = 10**4):
     w_fit_adj = w_fit - w_fit[0]
     r_fit_adj = r_fit - r_fit[0]
 
-    p = Plot1by2(figure_number=3)
+    p = Plot1by2(figure_number='2.3')
     p.plot_a(w_freq, w_psdx_adj, 'line1')
     p.plot_b(r_freq, r_psdx_adj, 'line1')
     p.plot_a(w_freq, w_fit_adj, 'dash_red')
@@ -149,7 +149,7 @@ def fig06(n: int = 10**4, no_tests: int = 200):
         acfe_values_1[i] = scaling_methods.acf_scaling(z_1)
         acfe_values_63[i] = scaling_methods.acf_scaling(z_63)
 
-    p = Plot1by2(figure_number=6)
+    p = Plot1by2(figure_number='2.6')
 
     # Plot ACF1 and ACF exponent values of the short-range data
     # on the first axis
@@ -204,7 +204,7 @@ def fig07(n: int = 10**4, no_tests: int = 10):
             (1 + mu_values[i] ** 2 - 2 * mu_values[i] * np.cos(0.2 * np.pi)) /
             (1 + mu_values[i] ** 2 - 2 * mu_values[i] * np.cos(0.02 * np.pi)))
 
-    p = Plot1by2(figure_number=7)
+    p = Plot1by2(figure_number='2.7')
     p.plot_a(mu_values, beta_expected, 'line1')
     p.plot_b(acf1_values, beta_values, 'scatter')
     p.show()
