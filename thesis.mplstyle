@@ -1,0 +1,16 @@
+figure.figsize: 10, 5
+figure.subplot.left:  0.1
+figure.subplot.right:  0.95
+figure.subplot.bottom: 0.1
+figure.subplot.top:    0.9
+figure.subplot.wspace: 0.05
+figure.subplot.hspace: 0.2
+axes.titlesize : 24
+axes.labelsize : 10
+axes.grid: True
+lines.linewidth : 0.5
+lines.markersize : 10
+xtick.labelsize : 10
+ytick.labelsize : 10
+font.family: serif
+font.serif: Palatino
