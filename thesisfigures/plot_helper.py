@@ -25,8 +25,7 @@ def standard_tick_params():
     returns a standard dictionary of axes.tick_params kwargs so that style is
     consistent throughout all plots
     """
-    dict01 = {'axes': 'both',
-              'top': True, 'bottom': True, 'left': True, 'right': True,
+    dict01 = {'top': True, 'bottom': True, 'left': True, 'right': True,
               'direction': 'in'}
     return dict01
 
@@ -50,12 +49,12 @@ class Plot1by2:
         self.fig.canvas.manager.set_window_title(f'Thesis_JPrettyman figure {figure_number}')
 
         # add subplots
-        self.ax1 = self.fig.add_subplot(1, 2, 1)
-        self.ax2 = self.fig.add_subplot(1, 2, 2)
+        self.ax1 = self.fig.add_axes([0.1, 0.1, 0.4, 0.8])
+        self.ax2 = self.fig.add_axes([0.5, 0.1, 0.4, 0.8])
 
         # set the tick_params for the axes
-        self.ax1.tick_params(standard_tick_params())
-        self.ax2.tick_params(standard_tick_params())
+        self.ax1.tick_params('both', **standard_tick_params())
+        self.ax2.tick_params('both', **standard_tick_params())
 
         # add labels 'a' and 'b'
         self.ax1.annotate(text='a', xy=(0, 0), xytext=(0.05, 0.93), xycoords='axes fraction', fontsize=20)
@@ -72,6 +71,7 @@ class Plot1by2:
         self.ax2.set(xlabel=x2, ylabel=y2)
 
     def sharey(self):
+        plt.style.use('./thesisfigures/mplstyles/tighty.mplstyle')
         self.ax2.tick_params('y', labelleft=False)
         self.ax2.set(ylabel='')
         ylim1 = self.ax1.get_ylim()
