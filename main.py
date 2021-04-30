@@ -1,12 +1,8 @@
 import numpy as np
 # from timeseries_module import TimeSeries
-from tippingpoints import noise_methods
-from tippingpoints import scaling_methods
-import tippingpoints.timeseries as ts
-from tippingpoints.numerical_methods import milstein_example
-from tippingpoints.numerical_methods import milstein_test
-import onedimensionalmethods
-from tippingpoints.numerical_methods import euler_test
+from thesisfigures import onedimensionalmethods
+
+
 # import pandas as pd
 # import scipy as sp
 
@@ -25,7 +21,7 @@ class CoolClass:
 
 if __name__ == '__main__':
 
-    onedimensionalmethods.fig06(no_tests=10)
+    onedimensionalmethods.fig07(no_tests=10)
 
     # c = CoolClass(np.array([5, 6, 7]), np.zeros(4))
     # c.show()

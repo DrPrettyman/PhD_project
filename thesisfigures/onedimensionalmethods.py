@@ -1,61 +1,14 @@
+#
 # plotting the figures in Chapter 2 of the thesis
+#
+
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy.polynomial.polynomial import polyfit
 from numpy.polynomial.polynomial import polyval
 from tippingpoints import scaling_methods
 from tippingpoints import noise_methods
-
-
-class Plot1by2:
-    """
-    Class initialises a figure with subplots side-by-side and includes
-    helper functions for plotting.
-    The original pyplot functionality can be accessed directly through
-    the object variables 'fig', 'ax1' and 'ax2', as in
-    p = Plot1by2()
-    p.ax1.set_xlim(0, 10)
-    """
-    def __init__(self, figure_number: str = '0', share_y_axis: bool = True):
-        self.share_y_axis = share_y_axis
-        plt.style.use('./thesis.mplstyle')
-        self.standard_line_dict = {'line1': {'color': 'k', 'lw': 1.2, 'ls': '-'},
-                                   'line2': {'color': (0.4, 0.4, 0.4), 'lw': 1.2, 'ls': '-'},
-                                   'line3': {'color': (0.7, 0.7, 0.7), 'lw': 1.2, 'ls': '-'},
-                                   'thin': {'color': (0.2, 0.2, 0.2), 'lw': 0.7, 'ls': '-'},
-                                   'thin_red': {'color': 'r', 'lw': 0.7, 'ls': '-'},
-                                   'thin_blue': {'color': 'b', 'lw': 0.7, 'ls': '-'},
-                                   'scatter': {'color': (0.1, 0.1, 0.1), 'lw': 1, 'ls': '', 'marker': 'o',
-                                               'markersize': 5},
-                                   'dash': {'color': (0.1, 0.1, 0.1), 'lw': 2, 'ls': '--'},
-                                   'dash_red': {'color': 'r', 'lw': 2, 'ls': '--'}}
-        self.fig, (self.ax1, self.ax2) = plt.subplots(1, 2)
-        self.fig.canvas.manager.set_window_title(f'Thesis_JPrettyman figure {figure_number}')
-        self.ax1.tick_params('both', top=True, bottom=True, left=True, right=True, direction='in')
-        self.ax2.tick_params('both', top=True, bottom=True, left=True, right=True, direction='in')
-        self.ax2.tick_params('y', labelleft=False)
-
-        self.ax1.annotate(text='a', xy=(0, 0), xytext=(0.05, 0.93), xycoords='axes fraction', fontsize=20)
-        self.ax2.annotate(text='b', xy=(0, 0), xytext=(0.05, 0.93), xycoords='axes fraction', fontsize=20)
-
-    def plot_a(self, x: np.ndarray, y: np.ndarray, ls='line1', label: str = None):
-        self.ax1.plot(x, y, **self.standard_line_dict[ls], label=label)
-
-    def plot_b(self, x: np.ndarray, y: np.ndarray, ls='line1', label: str = None):
-        self.ax2.plot(x, y, **self.standard_line_dict[ls], label=label)
-
-    def axes_labels(self, x1: str = '', y1: str = '', x2: str = '', y2: str = ''):
-        self.ax1.set(xlabel=x1, ylabel=y1)
-        self.ax2.set(xlabel=x2, ylabel=y2)
-
-    def show(self):
-        if self.share_y_axis:
-            ylim1 = self.ax1.get_ylim()
-            ylim2 = self.ax2.get_ylim()
-            ylim_new = (min(ylim1[0], ylim2[0]), max(ylim1[1], ylim2[1]))
-            self.ax1.set_ylim(ylim_new)
-            self.ax2.set_ylim(ylim_new)
-        plt.show()
+from thesisfigures.plot_helper import Plot1by2
 
 
 def fig01():
@@ -207,5 +160,9 @@ def fig07(n: int = 10**4, no_tests: int = 10):
     p = Plot1by2(figure_number='2.7')
     p.plot_a(mu_values, beta_expected, 'line1')
     p.plot_b(acf1_values, beta_values, 'scatter')
+    p.axes_labels(x1=r'AR(1) model parameter $\mu$',
+                  y1=r'Power spectrum exponent $\beta$',
+                  x2='ACF1(X)',
+                  y2='PS(X)')
     p.show()
     return
