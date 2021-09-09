@@ -120,7 +120,7 @@ class TimeSeries:
         else:
             raise ValueError(f'There is no indicator named {indicator_name}')
         fig, ax = plt.subplots()
-        ax.plot(t, indicator)
+        ax.plot(t, indicator, )
         plt.show()
 
 

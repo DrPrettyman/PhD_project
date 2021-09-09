@@ -1,16 +1,10 @@
-figure.figsize: 12, 6
-figure.subplot.left:  0.08
-figure.subplot.right:  0.98
-figure.subplot.bottom: 0.1
-figure.subplot.top:    0.9
-figure.subplot.wspace: 0.08
-figure.subplot.hspace: 0.2
-axes.titlesize : 24
-axes.labelsize : 12
-axes.grid: True
-lines.linewidth : 0.5
+axes.titlesize :   24
+axes.labelsize :   12
+axes.grid:         True
+lines.linewidth :  0.5
 lines.markersize : 10
-xtick.labelsize : 10
-ytick.labelsize : 10
-font.family: serif
-font.serif: Palatino
+xtick.labelsize :  10
+ytick.labelsize :  10
+axes.xmargin:      0
+font.family:       DejaVu Serif
+font.serif:        DejaVu Serif

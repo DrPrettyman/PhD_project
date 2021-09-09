@@ -111,7 +111,7 @@ def dfa(z: np.ndarray, order: int = 2, no_segment_lengths: int = 8, view: bool =
     linear_fit_poly = polyfit(np.log10(segment_lengths), np.log10(f_values), deg=1)
     if view:
         fig, ax = plt.subplots()
-        ax.plot(np.log10(segment_lengths), np.log10(f_values), color='green', marker='o')
+        ax.plot(np.log10(segment_lengths), np.log10(f_values), )
         plt.show()
     return linear_fit_poly[1] + 0.5
 
@@ -301,7 +301,7 @@ def acf_test():
         z = noise_methods.ar1(n, mu=mu_values[i], eta=1.)
         acf_values[i] = acf(z, 1)
     fig, ax = plt.subplots()
-    ax.plot(mu_values, acf_values)
+    ax.plot(mu_values, acf_values, )
     plt.show()
     return
 
@@ -399,8 +399,8 @@ def pse_test():
             (1 + mu_values[i] ** 2 - 2 * mu_values[i] * np.cos(0.2 * np.pi)) /
             (1 + mu_values[i] ** 2 - 2 * mu_values[i] * np.cos(0.02 * np.pi)))
     fig, ax = plt.subplots()
-    ax.plot(mu_values, beta_values)
-    ax.plot(mu_values, beta_expected)
+    ax.plot(mu_values, beta_values, )
+    ax.plot(mu_values, beta_expected, )
     plt.show()
     return
 
@@ -413,9 +413,9 @@ def plt_test():
     z3 = np.random.randint(-1, 2, n)
 
     fig, ax = plt.subplots(3)
-    ax[0].plot(t, z1)
-    ax[1].plot(t, z2)
-    ax[2].plot(t, z3)
+    ax[0].plot(t, z1, )
+    ax[1].plot(t, z2, )
+    ax[2].plot(t, z3, )
 
     ax[2].set(xlabel='time (t)')
     ax[0].grid()
