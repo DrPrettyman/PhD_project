@@ -1,9 +1,24 @@
+"""
+This module contains the class definition ThesisPlot.
+
+The ThesisPlot class accesses matplotlib and allows the creation of figures in a standardised style for
+consistency throughout the thesis.
+
+The layout of subplots can be defined by the user with the pattern property, for example the pattern [[0, 2], [0]]
+defines two subplots on the top row, with "very small" spacing between, and a single plot on the bottom row.
+
+The line styles are standardised and can be chosen from the keys in the dictionary ThesisPlot.standard_line_dict
+"""
+#
+#
+#
+
 import matplotlib.pyplot as plt
 import numpy as np
 import string
 
 
-def standard_line_dict(transparent=True):
+def init_standard_line_dict(transparent=True):
     """
     returns a standard dictionary of axes.plot kwargs so that style is
     consistent throughout all plots
@@ -140,7 +155,7 @@ class ThesisPlot:
     def __init__(self, pattern, figure_number: str = '', **pattern_kwargs):
         plt.style.use('./thesisfigures/mplstyles/thesis.mplstyle')
         self.figure_number = figure_number
-        self.standard_line_dict = standard_line_dict(transparent=True)
+        self.standard_line_dict = init_standard_line_dict(transparent=True)
         self.pattern = pattern
         self.tick_params = {'top': True, 'bottom': True,
                             'left': True, 'right': True,
@@ -171,7 +186,7 @@ class ThesisPlot:
     def set_transparent_false(self):
         # transparency must be set to False by calling this method before plotting if the figure is
         # intended to be saved in a format that does not support transparency (e.g. eps)
-        self.standard_line_dict = standard_line_dict(transparent=False)
+        self.standard_line_dict = init_standard_line_dict(transparent=False)
         print('Transparency set to False...')
 
     def plot(self, x: np.ndarray, y: np.ndarray, axes_no: int = 0,

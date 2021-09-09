@@ -1,3 +1,16 @@
+"""
+Provides various functions for generating stochastic processes or noise signals.
+Includes:
+ - White noise
+ - Random walk
+ - The AR(1) model (autoregressive model with lag 1)
+   commonly used to model a system undergoing Critical Slowing Down
+ - The AR(63) model
+   Used to model noise of varying colour
+"""
+#
+#
+#
 import matplotlib.pyplot as plt
 import numpy as np
 from tippingpoints import scaling_methods
