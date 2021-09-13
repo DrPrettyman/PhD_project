@@ -1,5 +1,7 @@
 """
-Provides various functions for generating stochastic processes or noise signals.
+The module ``noise_methods`` provides various functions for
+generating stochastic processes or noise signals.
+
 Includes:
  - White noise
  - Random walk
@@ -26,10 +28,13 @@ def random_walk(n: int, eta=1):
 
 def ar1(n: int, mu: float = 1., eta: float = 1.):
     """
-    Returns an AR(1) process of length n
-    :param n:   int
-    :param mu:  defaults to 1., giving a random walk
-    :param eta: std of noise process, defaults to 1.
+    Returns an AR(1) signal of length ``n`` with autoregressive parameter ``mu``
+
+    :param n:   Length og the series
+    :param mu:  Autoregressive parameter :math:`\\mu`. Defaults to 1.0 giving a random walk
+    :param eta: Standard deviation of noise process, defaults to 1.
+
+    :returns: AR(1) signal of length ``n``
     """
     z = np.zeros(n)
     for i in range(1, n):

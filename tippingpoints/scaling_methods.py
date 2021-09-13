@@ -1,9 +1,11 @@
 """
-Provides various functions for calculating scaling properties
-of time series, in particular calculating:
+
+The module ``scaling_methods`` provides various functions for
+calculating scaling properties of time series, in particular calculating:
 - lag-1 autocorrelation function
 - DFA scaling exponent
 - Power Spectrum scaling exponent
+
 And, in particular, each of these calculated in a sliding window.
 """
 #
@@ -24,20 +26,24 @@ from numpy.polynomial.polynomial import polyval
 def acf_sliding(t: np.ndarray, z: np.ndarray, window_size: int = 200,
                 lag: int = 1, increment: int = 1):
     """
-    For a time series z(t) we take select a slice of the data defined by
-    a sliding window e.g. for window_size=200 the first data slice would
-    be z[0:200].
+    For a time series :math:`z(t)` we select a slice of the data defined by
+    a sliding window e.g. for ``window_size=200`` the first data slice would
+    be ``z[0:200]``.
+
     We then measure the ACF (usually lag-1 ACF) of this slice and progress
-    the window by an increment, e.g. for increment=1 the second data slice
-    would be z[1:201].
-    This function returns y_out: the series of these ACF values, and
-    t_out, the corresponding time variable.
+    the window by an increment, e.g. for ``increment=1`` the second data slice
+    would be ``z[1:201]``.
+
+    This function returns ``y_out``: the series of these ACF values, and
+    ``t_out``, the corresponding time variable.
+
     :param t: time variable
     :param z: dependent variable
     :param window_size: length of the sliding window
     :param lag: the lag used in the ACF calculation
     :param increment: the increment by which the window is progressed at each step
-    :return: t_out, y_out
+
+    :returns: ``numpy.ndarray``: t_out, y_out
     """
     y = np.zeros(z.shape[0])
     test_range = range(window_size - 1, z.shape[0], increment)
@@ -52,6 +58,27 @@ def acf_sliding(t: np.ndarray, z: np.ndarray, window_size: int = 200,
 def dfa_sliding(t: np.ndarray, z: np.ndarray, window_size: int = 200,
                 order: int = 2, no_segment_lengths: int = 8,
                 increment: int = None):
+    """
+    For a time series :math:`z(t)` we select a slice of the data defined by
+    a sliding window e.g. for ``window_size=200`` the first data slice would
+    be ``z[0:200]``.
+
+    We then measure the DFA exponent of this slice and progress
+    the window by an increment, e.g. for ``increment=1`` the second data slice
+    would be ``z[1:201]``. The increment, if not user-specified, is set at
+    :math:`0.2` times the square root of the series length.
+
+    This function returns ``y_out``: the series of these ACF values, and
+    ``t_out``, the corresponding time variable.
+
+    :param t: time variable
+    :param z: dependent variable
+    :param window_size: length of the sliding window
+    :param order: the polynomial order used in the DFA exponent calculation
+    :param increment: the increment by which the window is progressed at each step
+
+    :returns: ``numpy.ndarray``: t_out, y_out
+    """
     if increment is None:
         increment = int(0.2 * np.sqrt(z.shape[0]))
         if increment < 1:
@@ -69,6 +96,27 @@ def dfa_sliding(t: np.ndarray, z: np.ndarray, window_size: int = 200,
 def pse_sliding(t: np.ndarray, z: np.ndarray, window_size: int = 200,
                 binning: bool = True, window_limits: (float, float) = (-2, -1),
                 increment: int = 1):
+    """
+    For a time series :math:`z(t)` we select a slice of the data defined by
+    a sliding window e.g. for ``window_size=200`` the first data slice would
+    be ``z[0:200]``.
+
+    We then measure the power spectrum scaling exponent of this slice and progress
+    the window by an increment, e.g. for ``increment=1`` the second data slice
+    would be ``z[1:201]``.
+
+    This function returns ``y_out``: the series of these ACF values, and
+    ``t_out``, the corresponding time variable.
+
+    :param t: time variable
+    :param z: dependent variable
+    :param window_size: length of the sliding window
+    :param binning: whether or not to use logarithmic binning on the periodogram
+                    as part of the PS exponent calculation
+    :param increment: the increment by which the window is progressed at each step
+
+    :returns: ``numpy.ndarray``: t_out, y_out
+    """
     y = np.zeros(z.shape[0])
     test_range = range(window_size - 1, z.shape[0], increment)
     for i in test_range:
@@ -85,12 +133,31 @@ def pse_sliding(t: np.ndarray, z: np.ndarray, window_size: int = 200,
 
 
 def acf(z: np.ndarray, lag: int = 1):
+    """
+    Calculates the autocorrelation function of a time series :math:`z`.
+
+    :param z: Time series
+    :param lag: The autocorrelation lag
+
+    :return: ``float``: autocorrelation function of a time series ``z``
+    """
     d1 = z[:-lag] - z.mean(0)
     d2 = z[lag:] - z.mean(0)
     return (d1 * d2).mean(0) / z.var(0)
 
 
 def acf_scaling(z: np.ndarray):
+    """
+    Calculates the autocorrelation scaling exponent of a time series :math:`z`.
+
+    This calculation involves calculating the ACF with lag :math:`l`
+    for :math:`l = 10, 11, 12, ..., 100` and then calculating the negative gradient
+    of the log-log plot :math:`l` against ACF.
+
+    :param z: The time series
+
+    :return: ``float``: autocorrelation scaling exponent of a time series ``z``
+    """
     lag_values = np.arange(10, 100, 1)
     acf_values = np.zeros(len(lag_values))
     for i in range(len(lag_values)):

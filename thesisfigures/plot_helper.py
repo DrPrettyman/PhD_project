@@ -1,13 +1,14 @@
 """
-This module contains the class definition ThesisPlot.
+This module contains the class definition :class:`ThesisPlot`.
 
-The ThesisPlot class accesses matplotlib and allows the creation of figures in a standardised style for
+The :class:`ThesisPlot` class accesses matplotlib and allows the creation of figures in a standardised style for
 consistency throughout the thesis.
 
-The layout of subplots can be defined by the user with the pattern property, for example the pattern [[0, 2], [0]]
+The layout of subplots can be defined by the user with the pattern property, for example the pattern ``[[0, 2], [0]]``
 defines two subplots on the top row, with "very small" spacing between, and a single plot on the bottom row.
 
-The line styles are standardised and can be chosen from the keys in the dictionary ThesisPlot.standard_line_dict
+The line styles are standardised and can be chosen from the keys in
+the dictionary :func:`ThesisPlot.standard_line_dict`.
 """
 #
 #
@@ -21,7 +22,13 @@ import string
 def init_standard_line_dict(transparent=True):
     """
     returns a standard dictionary of axes.plot kwargs so that style is
-    consistent throughout all plots
+    consistent throughout all plots.
+
+    The principal lines are three grayscale lines with width 1.2: ``'line1'``, ``'line2'`` and ``'line3'``.
+
+    :param transparent: Some standard lines are transparent but the transparency is set to 1 for all lines
+                        if ``transparent=False``. This is useful for saving figures in formats that do not
+                        support transparency.
     """
     dict00 = {'line1': {'color': 'k', 'lw': 1.2, 'ls': '-'},
               'line2': {'color': (0.3, 0.3, 0.3), 'lw': 1.2, 'ls': '-'},
@@ -59,14 +66,16 @@ def figure_properties(pattern, aspect: float = None, vertical_gap_size: str = 'l
     """
     Takes a subplot pattern and returns the positions of the subplots with
     standardised padding around the subplots.
+    This is called by methods in the :class:`ThesisPlot` class.
 
-    :param pattern: The pattern parameter is in top-to-bottom order.
-                    The pattern [[0, 2], [0]] defines two subplots on the top
-                    row, with vsmall spacing between, and a single plot on the
-                    bottom row.
-    :param aspect:
-    :param vertical_gap_size:
-    :return:
+    :param pattern:             The pattern parameter is in top-to-bottom order.
+                                The pattern ``[[0, 2], [0]]`` defines two subplots on the top
+                                row, with vsmall spacing between, and a single plot on the
+                                bottom row.
+    :param aspect:              The ratio of width to height.
+    :param vertical_gap_size:   The vertical gaps between axes on different rows can be
+                                adjusted with kwarg ``vertical_gap_size``
+    :return: (fig_width, fig_height), no_plots, axes_positions, axes_layout
     """
     fig_width = 10.   # Standard figure width 10 inches
     gap_large = 0.7   # Gap including axes labels, i.e. bottom and left of axes
@@ -77,7 +86,7 @@ def figure_properties(pattern, aspect: float = None, vertical_gap_size: str = 'l
     gap_sizes = [gap_large, gap_small, gap_vsmall, 0.]
 
     # The vertical gaps between axes on different rows can be
-    # adjusted with kwarg 'vertical_gap_size
+    # adjusted with kwarg 'vertical_gap_size'
     if vertical_gap_size == 'none':
         v_gap = 0.
     elif vertical_gap_size == 'vsmall':
@@ -151,8 +160,20 @@ class ThesisPlot:
     p = Plot1by2()
     p.ax[0].set_xlim(0, 10)
     """
-#     def __init__(self, pattern: list[list[int]], figure_number: str = '', **pattern_kwargs):
     def __init__(self, pattern, figure_number: str = '', **pattern_kwargs):
+        """
+        Initializes several properties and attributes used during plotting, including the canvas, the figure,
+        various figure properties and the subplot layout based on the ``pattern`` arg.
+
+        :param pattern:         The pattern parameter is in top-to-bottom order.
+                                The pattern ``[[0, 2], [0]]`` defines two subplots on the top
+                                row, with vsmall spacing between, and a single plot on the
+                                bottom row.
+        :param figure_number:   The figure number (string) is used to create the file name when saving the figure
+                                and is displayed in window title when displayed on-screen.
+        :param pattern_kwargs:  used during the call to :func:`figure_properties`.
+                                These are ``aspect`` and ``verical_gap_size``.
+        """
         plt.style.use('./thesisfigures/mplstyles/thesis.mplstyle')
         self.figure_number = figure_number
         self.standard_line_dict = init_standard_line_dict(transparent=True)
@@ -184,16 +205,33 @@ class ThesisPlot:
               .format(self.no_plots, self.axes_layout))
 
     def set_transparent_false(self):
-        # transparency must be set to False by calling this method before plotting if the figure is
-        # intended to be saved in a format that does not support transparency (e.g. eps)
+        """transparency must be set to False by calling this method before plotting if the figure is
+        intended to be saved in a format that does not support transparency (e.g. eps)
+        """
         self.standard_line_dict = init_standard_line_dict(transparent=False)
         print('Transparency set to False...')
 
     def plot(self, x: np.ndarray, y: np.ndarray, axes_no: int = 0,
              line_style='line1', label: str = None):
+        """
+        Plots a line onto a set of axes
+
+        :param x: The *x* variable
+        :param y: The *y* variable
+        :param axes_no: Axes indentifier for multiple-subplot figures
+        :param line_style: Standardised line style as defined by the dictionary :attr:`standard_line_dict`
+        :param label: Label for use in legend
+        """
         self.ax[axes_no].plot(x, y, label=label, **self.standard_line_dict[line_style])
 
     def v_dash(self, axes_no: int = 0, x_coord: float = 0., markers: bool = False):
+        """
+        Draws a vertical line at the specified *x* coordinate.
+
+        :param axes_no: Axes indentifier for multiple-subplot figures.
+        :param x_coord: The position at which to draw the vertical line.
+        :param markers: When ``True`` markers will be plotted on the line at the top and bottom edges of the subplot.
+        """
         _ylims = self.ax[axes_no].get_ylim()
         if markers:
             _line_style = 'v_dash_markers'
@@ -203,12 +241,29 @@ class ThesisPlot:
         self.ax[axes_no].set_ylim(_ylims)
 
     def axes_labels(self, axes_no: int = 0, xlabel: str = '', ylabel: str = ''):
+        """
+        Sets the *x* and *y* axis labels for the specified subplot axes.
+
+        :param axes_no:
+        :param xlabel:
+        :param ylabel:
+        """
         self.ax[axes_no].set(xlabel=xlabel, ylabel=ylabel)
 
     def legend(self, axes_no: int = 0):
+        """
+        Turs on the legend for the specified subplot axes.
+
+        :param axes_no:
+        """
         self.ax[axes_no].legend()
 
     def share_xlims(self, axes: list):
+        """
+        Resets the *x* limits for all axes in ``axes`` (given as a list) so that the *x* axes are aligned.
+
+        :param axes:
+        """
         _xlims = [self.ax[_i].get_xlim() for _i in axes]
         _xlim_new = (min([_xlims[_i][0] for _i in range(len(_xlims))]),
                      max([_xlims[_i][1] for _i in range(len(_xlims))]))
@@ -216,6 +271,11 @@ class ThesisPlot:
             self.ax[_i].set_xlim(_xlim_new)
 
     def share_ylims(self, axes: list = None):
+        """
+        Resets the *y* limits for all axes in ``axes`` (given as a list) so that the *y* axes are aligned.
+
+        :param axes:
+        """
         if axes is None:
             axes = list(range(self.no_plots))
         _ylims = [self.ax[_i].get_ylim() for _i in axes]
@@ -225,6 +285,11 @@ class ThesisPlot:
             self.ax[_i].set_ylim(_ylim_new)
 
     def auto_share_ylims(self, row_no: int):
+        """
+        Calls ``share_ylims`` for all axes which are positioned in a vertical stack in the specified row.
+
+        :param row_no: The index of the row in which to perform the sharing of *y* axes.
+        """
         _l = [[]]
         _k = 0
         for _i in range(len(self.pattern[row_no])):
@@ -242,7 +307,7 @@ class ThesisPlot:
     def print_prep(self):
         """
         Prepares the figure for display or save by cleaning up
-        the axes labels and tick labels
+        the axes labels and tick labels.
         """
         for _row in range(len(self.pattern)):
             for _col in range(len(self.pattern[_row])):
@@ -258,20 +323,28 @@ class ThesisPlot:
                 self.auto_share_ylims(row_no=_row)
 
     def show(self):
+        """Calls ``matplotlib.pyplot.show()``."""
         print('Showing figure...')
         self.print_prep()
         plt.show()
 
-    def save_figure(self, fig_format='png'):
+    def save_figure(self, fig_format: str = 'png', path: str = '../../Desktop/'):
+        """
+        Saves the figure in the specified format.
+
+        :param fig_format: File extension specifying the format.
+        :param path: Path to saved file.
+        """
         fig_no = self.figure_number.split('.')[-1]
         while len(fig_no) < 2:
             fig_no = '0'+fig_no
-        filename = '../../Desktop/fig'+fig_no+'.'+fig_format
+        filename = path+'fig'+fig_no+'.'+fig_format
         print('Saving figure as {0}'.format(filename)+'...')
-        dpi_parameter = 600 if fig_format == 'png' else None
+        dpi_parameter = 800 if fig_format == 'png' else None
         plt.savefig(filename, dpi=dpi_parameter, format=fig_format)
 
     def print_figure_properties(self):
+        """Prints the figure properties to the console."""
         print('Figure properties:')
         print(f' - figure size (w,h) : {self.fig_size}')
         print(f' - number of plots   : {self.no_plots}')

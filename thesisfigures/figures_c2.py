@@ -1,7 +1,14 @@
 #
 # plotting the figures in Chapter 2 of the thesis
 #
-
+"""
+The module ``figures_c2`` contains several functions with names like
+``fig01()`` or ``tab01()`` that reproduce the experiments and the
+resulting figures or tables from chapter 2 of the thesis (one-dimensional
+tipping point techniques). These rely upon functions in other modules
+particularly, for plotting the figures, the :class:`plot_helper.ThesisPlot` class.
+"""
+#
 # import matplotlib.pyplot as plt
 import numpy as np
 from numpy.polynomial.polynomial import polyfit
@@ -12,13 +19,37 @@ from thesisfigures.plot_helper import ThesisPlot
 
 
 def fig01():
+    """
+    Plots fig 2.1 of the thesis (page 42).
+
+    Analysis of artificial red noise with scaling exponents measured using three
+    different methods.
+
+    Panel a: Red noise is generated using the method shown in equation 2.8.
+    Panel b: The ACF of the red noise data is calculated for different lags and
+    the exponent (negative slope) measured in the range :math:`10 ≤ s ≤ 100` (dashed lines).
+
+    We note that the ACF1 indicator (C(1)) is 0.84.
+    The ACF of a white noise series is also plotted for comparison,
+    in this case :math:`C(s) = 0` for :math:`s ≥ 1` and the exponent is also zero.
+
+    Panel c: DFA calculated for the data and the exponent (slope) measured in the range
+    :math:`10 ≤ s ≤ 100`.
+
+    Panel d: The power spectrum of the data, and the exponent (negative slope)
+    measured in the frequency range :math:`10^{-2} ≤ f ≤ 10^{-1}`.
+
+    """
     return
 
 
 def fig02():
     """
+    Plots fig 2.2 of the thesis (page 44).
+
     The detrending step in the order-2 DFA algorithm (equation 2.11).
-    The cumulative sum of a pink-noise time series z(t) is shown with
+
+    The cumulative sum of a pink-noise time series :math:`z(t)` is shown with
     the quadratic best fit (red line) in each segment of length 20
     (marked by dashed vertical lines).
     :return:
@@ -32,7 +63,7 @@ def fig03(n: int = 10**4):
 
     This is a simple demonstration of fitting a linear best-fit
     to a periodogram, in this case the periodograms for a
-    white noise series and a random walk, both of length 'n'
+    white noise series and a random walk, both of length *n*.
 
     :param n: length of series
     """
@@ -42,6 +73,7 @@ def fig03(n: int = 10**4):
     random_walk = noise_methods.random_walk(n, eta=1)
 
     # calculate the PS exponent and psdx of each series using scaling_methods.pse()
+    # in the range :math:`-2<\log(f)<-1`
     w_pse, w_freq, w_psdx =\
         scaling_methods.pse(white_noise, binning=True, window_limits=(-2, -1))
     r_pse, r_freq, r_psdx = \
@@ -86,28 +118,29 @@ def fig03(n: int = 10**4):
 
 def fig04():
     """
-    DFA exponent α plotted against the PS exponent β for short-range
+    Plots fig 2.4 of the thesis (page 57).
+
+    DFA exponent α plotted against the PS exponent :math:`β` for short-range
     correlated (panel a) and long-range correlated (panel b) noise
     series of length 104 with varying correlation parameters.
 
     The result for each noise series is represented by one marker,
-    the expected linear relationship is shown in red, see equation 2.43.
-
-    :return:
+    the expected linear relationship, shown in red, is :math:`α = (1+β)/2`
+    (see equation 2.43).
     """
     return
 
 
 def fig05():
     """
+    Plots fig 2.5 of the thesis (page 58).
+
     Standard deviation of the ACF and DFA scaling exponents over
     50 noise series of length 1000, for each noise correlation
-    parameter λ = 0,0.02,0.04,...,1.
+    parameter :math:`λ = 0, 0.02, 0.04, ..., 1`.
 
     The mean values of the exponents range between 0 and 1.2 (for ACF),
     and between 0.5 and 1 (for DFA).
-
-    :return:
     """
     return
 
@@ -158,14 +191,14 @@ def fig06(n: int = 10**4, no_tests: int = 200):
 
     p.axes_labels(0, xlabel='AR(1) model parameter', ylabel='Exponent value')
     p.axes_labels(1, xlabel='AR(63) model parameter', ylabel='Exponent value')
-    p.sharey()
+    p.share_ylims()
     p.show()
     return
 
 
 def fig07(n: int = 10**4, no_tests: int = 10):
     """
-    Plots fig 2.7 of the thesis (page 67)
+    Plots fig 2.7 of the thesis (page 67).
 
     A plot of the analytically derived relationship between the
     AR(1) model parameter mu and the PS scaling exponent beta,
@@ -173,9 +206,10 @@ def fig07(n: int = 10**4, no_tests: int = 10):
     relationship. The two plots should show a similar pattern.
 
     The analytical relationship between beta and mu is given
-    by eqn2.86 of in the thesis (page 65):
-    beta = log10[(1 + mu^2 - 2*mu*cos(0.2*pi)) /
-                    (1 + mu^2 - 2*mu*cos(0.02*pi))]
+    by eqn2.86 of in the thesis (page 65)::
+
+        beta = log10[(1 + mu^2 - 2*mu*cos(0.2*pi)) / (1 + mu^2 - 2*mu*cos(0.02*pi))]
+
     The relationship is obtained experimentally by generating
     several AR(1) series with different parameter mu and, for
     each series, calculating the lag-1 ACF (which reconstructs
@@ -209,20 +243,26 @@ def fig07(n: int = 10**4, no_tests: int = 10):
 
 def fig08(n: int = 10**6):
     """
-    Plots fig 2.8 of the thesis (page 69)
+    Plots fig 2.8 of the thesis (page 69).
 
     A plot showing a power spectrum containing a 'crossover', in this
-    case the periodogram of the time series 'z': the sum of a random walk
-    and a white noise series. The point at which the crossover occurs is
+    case the periodogram of the time series :math:`z(t)`: the sum of a random walk
+    :math:`W_t = W_{t-1} + \\zeta_t`
+    and a white noise series :math:`\\eta_t`. The point at which the crossover occurs is
     determined by the std of the white noise.
 
-    :param n: length of the time series z
+    :param n: length of the time series ``z``
     """
     print('Setting parameters...')
+    # mu is chosen so that the crossover will occur in the middle
+    # of the frequency range :math:`10^{-2} ≤ f ≤ 10^{-1}`.
     mu = (10 ** (3/2))/(2 * np.pi)
+    # The window limits are actually larger than the frequency range
+    # so that we can see the whole picture in context.
     local_window_lims = (-3, -0.5)
 
     print('generating time series...')
+    # We generate a random walk and a white noise series then add them together
     random_walk = noise_methods.random_walk(n, 1)
     white_noise = noise_methods.white_noise(n, mu)
     z = random_walk + white_noise
@@ -257,6 +297,14 @@ def fig08(n: int = 10**6):
 
 
 def ar1_ps(f, mu, sigma):
+    """
+    A function of frequency *f*, AR parameter *mu* and noise level *sigma*.
+
+    :param f:
+    :param mu:
+    :param sigma:
+    :return:
+    """
     return (sigma**2) / (1 + mu**2 - 2*mu*np.cos(2*np.pi*f))
 
 
@@ -266,6 +314,8 @@ def ar1_ps_indicator(f, mu):
 
 def fig10():
     """
+    Plots fig 2.10 of the thesis (page 76).
+
     Panel a: The power spectrum of the AR(1) process (see equation 2.81)
     is plotted on a log-log scale for various values of the parameter μ.
     Note the ‘white-noise’ (flat) part of the power spectrum for small f
