@@ -6,7 +6,7 @@
 SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = source
-BUILDDIR      = ../../gh-pages-phddocs
+BUILDDIR      = ../../phd_docs/docs
 
 # Put it first so that "make" without argument is like "make help".
 help:
