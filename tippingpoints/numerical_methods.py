@@ -1,3 +1,13 @@
+#
+#
+#
+"""
+The module ``numerical_methods`` provides the Euler_Maruyama method and the Milstein method
+to integrate a stochastic equation of the form :math:`dZ = a(Z)dt + \\sigma dW`
+"""
+#
+#
+#
 import numpy as np
 import matplotlib.pyplot as plt
 from time import perf_counter
@@ -8,7 +18,26 @@ def dW(delta_t):
     return np.random.normal(loc=0.0, scale=np.sqrt(delta_t))
 
 
-def eulermaruyama(a, sigma, z_0=0, t_0=0, t_end=1, n=1000, ensemble_size=1, radius=(-10, 10)):
+def eulermaruyama(a, sigma: float, z_0: float = 0, t_0: float = 0, t_end: float = 1, n: int = 1000,
+                  ensemble_size: int = 1, radius: tuple = (-10, 10)):
+    """
+    Integrates a stochastic equation of the form
+    :math:`dZ = a(Z)dt + \\sigma dW` according to the Euler-Maruyama method
+
+    Returns the time variable ``ts`` and the integrated series ``ys``.
+
+    :param a:       function of t and z returning a single value
+    :param sigma:   standard deviation of stochastic noise
+    :param z_0:     initial condition in z
+    :param t_0:     start time
+    :param t_end:   end time
+    :param n:       length of output. The integration time delta is therefore defined as ``(t_end - t_0) / n``
+    :param ensemble_size:   for ensemble size :math:`m` the output ``ys`` will be a :math:`n` by :math:`m` array
+    :param radius:          defines a range constraining the integration. The integration stops if `
+                            `y < radius[0]`` or ``y > radius[1]`` in order to prevent blow-up
+
+    :returns: ``numpy.ndarray``: ts, ys``
+    """
     dt = float(t_end - t_0) / n
     # epsilon = 10 ** (-5)
     ts = np.arange(t_0, t_end + dt, dt)
@@ -35,20 +64,25 @@ def eulermaruyama(a, sigma, z_0=0, t_0=0, t_end=1, n=1000, ensemble_size=1, radi
     return ts, ys
 
 
-def milstein_method(a, b, z_0=0, t_0=0, t_end=1, n=1000, ensemble_size=1, radius=(-10, 10)):
+def milstein_method(a, b, z_0: float = 0, t_0: float = 0, t_end: float = 1, n: int = 1000,
+                    ensemble_size: int = 1, radius: tuple = (-10, 10)):
     """
     Integrates a stochastic equation of the form
-    dZ = a(Z)dt + b(Z)dW
-    :param a: function of t and z returning a single value
-    :param b: function of t and z returning a single value
-    :param z_0:
-    :param t_0:
-    :param t_end:
-    :param n:
-    :param ensemble_size:
-    :param radius:
-    :return: ts: time variable: n x 1 numpy array
-             ys: integrated time series: n x ensemble_size numpy array
+    :math:`dZ = a(Z)dt + b(Z)dW` according to the Milstein method
+
+    Returns the time variable ``ts`` and the integrated series ``ys``.
+
+    :param a:       function of t and z returning a single value
+    :param b:       function of t and z returning a single value
+    :param z_0:     initial condition in z
+    :param t_0:     start time
+    :param t_end:   end time
+    :param n:       length of output. The integration time delta is therefore defined as ``(t_end - t_0) / n``
+    :param ensemble_size:   for ensemble size :math:`m` the output ``ys`` will be a :math:`n` by :math:`m` array
+    :param radius:          defines a range constraining the integration. The integration stops if `
+                            `y < radius[0]`` or ``y > radius[1]`` in order to prevent blow-up
+
+    :returns: ``numpy.ndarray``: ts, ys``
     """
     dt = float(t_end - t_0) / n
     epsilon = 10 ** (-5)

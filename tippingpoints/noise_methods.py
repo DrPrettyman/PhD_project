@@ -19,10 +19,25 @@ from tippingpoints import scaling_methods
 
 
 def white_noise(n: int, eta: float = 1):
+    """
+    Returns a simple gaussian white noise signal where each term is
+    sampled independently from a normal distribution
+
+    :param n:   length of returned series
+    :param eta: standard deviation of series
+    :returns: ``numpy.ndarray``
+    """
     return eta * np.random.randn(n)
 
 
 def random_walk(n: int, eta=1):
+    """
+    Returns a simple random walk, the cumulative sum of a gaussian white noise series
+
+    :param n:   length of returned series
+    :param eta: standard deviation of the white noise series
+    :returns: ``numpy.ndarray``
+    """
     return np.cumsum(eta * np.random.randn(n))
 
 
@@ -42,7 +57,15 @@ def ar1(n: int, mu: float = 1., eta: float = 1.):
     return z
 
 
-def ar63(n: int, lamb: float = 2., eta: float = 1):
+def ar63(n: int, lamb: float = 2., eta: float = 1.):
+    """
+    Returns as AR(63) series  
+
+    :param n:
+    :param lamb:
+    :param eta:
+    :return:
+    """
     a = np.zeros(64)
     a[0] = 1.
     for k in range(1, 64):

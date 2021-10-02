@@ -1,5 +1,4 @@
 """
-
 The module ``scaling_methods`` provides various functions for
 calculating scaling properties of time series, in particular calculating:
 - lag-1 autocorrelation function

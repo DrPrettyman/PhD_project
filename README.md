@@ -8,3 +8,6 @@ This project involves the application of established Early Warning Signal detect
 to time series of dynamical system variables containing tipping points, and an investigation of 
 the pros and cons of a novel technique which uses the changing shape of the power spectrum close 
 to a tipping point. 
+
+Documentation is at docs/build/html/index.html
+

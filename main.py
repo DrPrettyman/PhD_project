@@ -2,10 +2,10 @@
 
 import numpy as np
 from timeseries_module import TimeSeries
-from thesisfigures import onedimensionalmethods
+from thesisfigures import figures_c2
 from thesisfigures import plot_helper
 
 if __name__ == '__main__':
 
-    onedimensionalmethods.fig08()
+    figures_c2.fig08()
 
